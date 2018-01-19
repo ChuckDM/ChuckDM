@@ -17,9 +17,37 @@
     <!-- the jScrollPane script -->
     <script type="text/javascript" src="js/jquery.jscrollpane.js"></script>
     <script type="text/javascript">
-      $(function(){
-                    $('#containerForm').jScrollPane();
-                  });
+          $(function()
+                    {
+                    	$('#containerForm').each(
+                    		function()
+                    		{
+                    			$(this).jScrollPane(
+                    				{
+                    					showArrows: $(this).is('.arrow')
+                    				}
+                    			);
+                    			var api = $(this).data('jsp');
+                    			var throttleTimeout;
+                    			$(window).bind(
+                    				'resize',
+                    				function()
+                    				{
+                    					if (!throttleTimeout) {
+                    						throttleTimeout = setTimeout(
+                    							function()
+                    							{
+                    								api.reinitialise();
+                    								throttleTimeout = null;
+                    							},
+                    							50
+                    						);
+                    					}
+                    				}
+                    			);
+                    		}
+                    	)
+                    });
     </script>
   </head>
   <body>
