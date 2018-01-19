@@ -1,6 +1,6 @@
 
 body {
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/1e/Rio_De_Janeiro_-_Rafael_Defavari.jpg");
+    background-image: url(../img/rj.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
