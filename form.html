@@ -24,6 +24,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="https://wzrd.in/standalone/formdata-polyfill"></script>
+<script src="https://wzrd.in/standalone/promise-polyfill@latest"></script>
+<script src="https://wzrd.in/standalone/whatwg-fetch@latest"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -37,22 +40,6 @@
       $(function(){
                     $('#containerForm').jScrollPane();
                   });
-    </script>
-    <script type="text/javascript">
-          var $form = $('mainForm'),
-          url = 'https://script.google.com/macros/u/0/s/AKfycbz6mSYpIcRYGUcz5QMEqWz1LxSS8ppVargAYAmiLs9XCDLWSB1r/exec'
-          $('#submit').on('click', function(e) {
-            e.preventDefault();
-            var jqxhr = $.ajax({
-              url: url,
-              method: "GET",
-              dataType: "json",
-              data: $form.serializeObject()
-            }).success(
-              // do something
-              alert("SUCCESS")
-            );
-          })
     </script>
   </head>
   <body>
@@ -95,7 +82,7 @@
     <div class="container pre-scrollable" id="containerForm">
         <div class="row">
             <div class="col-lg-12">
-          <form id="mainForm">
+              <form name="submit-to-google-sheet">
                 <div class="form-group">
                   <label for="exampleFormControlSelect1">Capitulo</label>
                   <select class="form-control" id="exampleFormControlSelect1" name="capitulo">
@@ -345,8 +332,6 @@
                     </label>
                 </div>
                 <hr>
-
-
                 <!-- <div class="form-check">
                   <input type="checkbox" class="form-check-input" id="exampleCheck1">
                   <label class="form-check-label" for="exampleCheck1">Check me out</label>
@@ -358,7 +343,17 @@
     </div>
 
     <!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeMdZz9YUV42ziMl_O3hCyDYgQIsGTaeq1RGbhmeT3DtGGpsg/viewform?embedded=true#start=embed" frameborder="0"  id="formContainer">Carregando…</iframe> -->
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbz6mSYpIcRYGUcz5QMEqWz1LxSS8ppVargAYAmiLs9XCDLWSB1r/exec'
+      const form = document.forms['submit-to-google-sheet']
 
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => console.log('Success!', response))
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
 
   </body>
 </html>
